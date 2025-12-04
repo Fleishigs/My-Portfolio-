@@ -248,30 +248,33 @@
             gap: 2rem;
         }
 
-        /* Horizontal Row Layout */
         .phones-wrapper {
             position: relative;
             width: 100%;
-            max-width: 1200px;
+            height: clamp(500px, 70vh, 650px);
+            perspective: 1500px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: clamp(1rem, 3vw, 3rem);
-            padding: 2rem clamp(1rem, 3vw, 2rem);
-            flex-wrap: wrap;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
         }
 
         .phone {
-            width: clamp(200px, 28vw, 280px);
-            height: clamp(400px, 56vw, 560px);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .phone.active {
-            transform: scale(1.08);
-            z-index: 10;
+            position: absolute;
+            width: clamp(220px, 35vw, 280px);
+            height: clamp(440px, 60vw, 560px);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
         }
 
         .phone-shell {
@@ -396,6 +399,49 @@
             transform: translateY(-2px);
         }
 
+        /* Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(45px, 8vw, 60px);
+            height: clamp(45px, 8vw, 60px);
+            background: rgba(0, 217, 255, 0.2);
+            border: 2px solid var(--electric-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-arrow:hover {
+            background: var(--electric-blue);
+            box-shadow: 0 0 30px var(--electric-blue);
+        }
+
+        .nav-arrow.left {
+            left: clamp(10px, 3vw, 30px);
+        }
+
+        .nav-arrow.right {
+            right: clamp(10px, 3vw, 30px);
+        }
+
+        .nav-arrow svg {
+            width: clamp(20px, 4vw, 30px);
+            height: clamp(20px, 4vw, 30px);
+            stroke: var(--bright-cyan);
+            transition: stroke 0.3s ease;
+        }
+
+        .nav-arrow:hover svg {
+            stroke: #000;
+        }
+
         /* Indicators */
         .indicators {
             display: flex;
@@ -447,14 +493,9 @@
                 grid-template-columns: 1fr;
             }
 
-            .phones-wrapper {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
             .phone {
-                width: clamp(220px, 80vw, 300px);
-                height: clamp(440px, 130vw, 600px);
+                width: clamp(200px, 70vw, 280px);
+                height: clamp(400px, 110vw, 560px);
             }
 
             .phone-display iframe {
@@ -511,48 +552,57 @@
     <!-- Projects -->
     <section class="projects-section">
         <h2 class="section-title">PROJECTS</h2>
-        <p class="scroll-hint">// TAP A PHONE TO VIEW DETAILS →</p>
+        <p class="scroll-hint">// USE ARROWS TO NAVIGATE →</p>
         
         <div class="carousel-container">
-            <!-- Horizontal Row: All 3 Side by Side -->
             <div class="phones-wrapper">
-                <!-- BootCraft - Left -->
-                <div class="phone active" data-index="0" onclick="selectPhone(0)">
-                    <div class="phone-shell">
-                        <div class="phone-notch"></div>
-                        <div class="phone-display">
-                            <iframe src="https://bootanimation.netlify.app" loading="lazy"></iframe>
+                <div class="carousel" id="carousel">
+                    <!-- BootCraft -->
+                    <div class="phone" data-index="0">
+                        <div class="phone-shell">
+                            <div class="phone-notch"></div>
+                            <div class="phone-display">
+                                <iframe src="https://bootanimation.netlify.app" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Master Fab -->
+                    <div class="phone" data-index="1">
+                        <div class="phone-shell">
+                            <div class="phone-notch"></div>
+                            <div class="phone-display">
+                                <iframe src="https://masterfab.netlify.app" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- K-Pod -->
+                    <div class="phone" data-index="2">
+                        <div class="phone-shell">
+                            <div class="phone-notch"></div>
+                            <div class="phone-display">
+                                <iframe src="https://k-pod.netlify.app" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Master Fab - Center -->
-                <div class="phone" data-index="1" onclick="selectPhone(1)">
-                    <div class="phone-shell">
-                        <div class="phone-notch"></div>
-                        <div class="phone-display">
-                            <iframe src="https://masterfab.netlify.app" loading="lazy"></iframe>
-                        </div>
-                    </div>
+                <!-- Navigation -->
+                <div class="nav-arrow left" id="prevBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
                 </div>
-
-                <!-- K-Pod - Right -->
-                <div class="phone" data-index="2" onclick="selectPhone(2)">
-                    <div class="phone-shell">
-                        <div class="phone-notch"></div>
-                        <div class="phone-display">
-                            <iframe src="https://k-pod.netlify.app" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-                        </div>
-                    </div>
+                <div class="nav-arrow right" id="nextBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
                 </div>
             </div>
 
             <!-- Indicators -->
-            <div class="indicators" id="indicators">
-                <div class="indicator active" onclick="selectPhone(0)"></div>
-                <div class="indicator" onclick="selectPhone(1)"></div>
-                <div class="indicator" onclick="selectPhone(2)"></div>
-            </div>
+            <div class="indicators" id="indicators"></div>
 
             <!-- Project Info Below Phones -->
             <div class="project-info-section">
@@ -581,37 +631,119 @@
     </footer>
 
     <script>
+        const carousel = document.getElementById('carousel');
         const phones = document.querySelectorAll('.phone');
-        const indicators = document.querySelectorAll('.indicator');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicatorsContainer = document.getElementById('indicators');
         const projectCards = document.querySelectorAll('.project-info-card');
         
         let currentIndex = 0;
+        const totalPhones = phones.length;
 
-        function selectPhone(index) {
-            currentIndex = index;
+        // Create indicators
+        for (let i = 0; i < totalPhones; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator';
+            if (i === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateCarousel() {
+            const isMobile = window.innerWidth <= 768;
+            const screenWidth = window.innerWidth;
+            const sideOffset = isMobile ? Math.min(120, screenWidth * 0.30) : 220;
             
-            // Update active states
-            phones.forEach((phone, i) => {
-                phone.classList.toggle('active', i === index);
+            phones.forEach((phone, index) => {
+                const offset = index - currentIndex;
+                const absOffset = Math.abs(offset);
+                
+                phone.classList.remove('active');
+                
+                if (offset === 0) {
+                    // Center phone (active)
+                    phone.style.transform = 'translate(-50%, -50%) translateZ(0) scale(1)';
+                    phone.style.opacity = '1';
+                    phone.style.zIndex = '10';
+                    phone.classList.add('active');
+                } else if (offset === 1) {
+                    // Right phone
+                    phone.style.transform = `translate(-50%, -50%) translateX(${sideOffset}px) translateZ(-100px) rotateY(-20deg) scale(0.85)`;
+                    phone.style.opacity = '0.7';
+                    phone.style.zIndex = '5';
+                } else if (offset === -1) {
+                    // Left phone
+                    phone.style.transform = `translate(-50%, -50%) translateX(-${sideOffset}px) translateZ(-100px) rotateY(20deg) scale(0.85)`;
+                    phone.style.opacity = '0.7';
+                    phone.style.zIndex = '5';
+                } else {
+                    // Hidden phones
+                    const direction = offset > 0 ? 1 : -1;
+                    phone.style.transform = `translate(-50%, -50%) translateX(${direction * sideOffset * 2}px) translateZ(-200px) scale(0.6)`;
+                    phone.style.opacity = '0';
+                    phone.style.zIndex = '1';
+                }
             });
-            
-            indicators.forEach((indicator, i) => {
-                indicator.classList.toggle('active', i === index);
+
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
             });
-            
-            projectCards.forEach((card, i) => {
-                card.classList.toggle('active', i === index);
+
+            // Update project cards
+            projectCards.forEach((card, index) => {
+                card.classList.toggle('active', index === currentIndex);
             });
         }
 
-        // Keyboard navigation
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalPhones;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalPhones) % totalPhones;
+            updateCarousel();
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') {
-                selectPhone((currentIndex + 1) % 3);
-            } else if (e.key === 'ArrowLeft') {
-                selectPhone((currentIndex - 1 + 3) % 3);
-            }
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
         });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        // Handle resize
+        window.addEventListener('resize', updateCarousel);
+
+        // Initialize
+        updateCarousel();
     </script>
 </body>
 </html>
