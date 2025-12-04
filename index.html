@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>sams-club</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-blue: #0a0e27;
+            --dark-blue: #1a1f3a;
+            --electric-blue: #00d9ff;
+            --bright-cyan: #0ff;
+            --neon-purple: #b000ff;
+            --grid-color: rgba(0, 217, 255, 0.15);
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: var(--deep-blue);
+            color: #fff;
+            position: relative;
+        }
+
+        /* Cyberpunk Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(0deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0);
+            }
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px);
+            }
+        }
+
+        /* Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 217, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+
+        .neon-box {
+            position: relative;
+            padding: clamp(1.5rem, 5vw, 3rem) clamp(2rem, 8vw, 5rem);
+            border: 3px solid var(--electric-blue);
+            box-shadow: 
+                0 0 20px var(--electric-blue),
+                inset 0 0 20px rgba(0, 217, 255, 0.1);
+            animation: neonPulse 2s infinite alternate;
+            max-width: calc(100% - 2rem);
+        }
+
+        @keyframes neonPulse {
+            0% {
+                box-shadow: 
+                    0 0 20px var(--electric-blue),
+                    inset 0 0 20px rgba(0, 217, 255, 0.1);
+            }
+            100% {
+                box-shadow: 
+                    0 0 40px var(--electric-blue),
+                    0 0 80px rgba(0, 217, 255, 0.5),
+                    inset 0 0 40px rgba(0, 217, 255, 0.2);
+            }
+        }
+
+        .glitch-text {
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: bold;
+            color: var(--bright-cyan);
+            text-transform: uppercase;
+            letter-spacing: clamp(0.1rem, 1.5vw, 0.5rem);
+            text-shadow: 0 0 10px var(--bright-cyan);
+        }
+
+        .subtitle {
+            margin-top: 2rem;
+            font-size: clamp(0.8rem, 3vw, 1.5rem);
+            color: var(--electric-blue);
+            text-align: center;
+            overflow: hidden;
+            border-right: 3px solid var(--electric-blue);
+            white-space: nowrap;
+            animation: typing 2s steps(30) 0.5s forwards, blink 0.75s step-end infinite;
+            width: 0;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Links Section */
+        .links-section {
+            position: relative;
+            padding: 3rem 1rem;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+            gap: 1.5rem;
+            max-width: min(900px, calc(100% - 2rem));
+            width: 100%;
+        }
+
+        .cyber-link {
+            position: relative;
+            padding: 1.2rem 1rem;
+            background: linear-gradient(135deg, var(--dark-blue), rgba(26, 31, 58, 0.5));
+            border: 2px solid var(--electric-blue);
+            text-decoration: none;
+            color: var(--bright-cyan);
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+            display: block;
+        }
+
+        .cyber-link:hover {
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 10px 40px rgba(0, 217, 255, 0.6),
+                0 0 60px rgba(176, 0, 255, 0.4);
+            color: #fff;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            position: relative;
+            padding: 3rem 0;
+            min-height: 100vh;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 7vw, 4rem);
+            color: var(--bright-cyan);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px var(--bright-cyan);
+            padding: 0 1rem;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            color: var(--electric-blue);
+            font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            padding: 0 1rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* 3D Carousel Container */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: clamp(450px, 70vh, 700px);
+            perspective: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0 10px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .phone {
+            position: absolute;
+            width: clamp(220px, 45vw, 320px);
+            height: clamp(440px, 75vw, 650px);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .phone-shell {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #000, var(--dark-blue));
+            border-radius: clamp(30px, 5vw, 40px);
+            padding: clamp(8px, 2vw, 12px);
+            box-shadow: 
+                0 0 40px rgba(0, 217, 255, 0.4),
+                inset 0 0 20px rgba(0, 217, 255, 0.1);
+            border: 2px solid var(--electric-blue);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .phone.active .phone-shell {
+            box-shadow: 
+                0 0 80px rgba(0, 217, 255, 0.8),
+                0 0 120px rgba(176, 0, 255, 0.5),
+                inset 0 0 40px rgba(0, 217, 255, 0.2);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: clamp(8px, 2vw, 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(80px, 15vw, 120px);
+            height: clamp(18px, 3vw, 25px);
+            background: #000;
+            border-radius: 0 0 12px 12px;
+            z-index: 10;
+            border: 2px solid var(--dark-blue);
+        }
+
+        .phone-display {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: clamp(25px, 4vw, 35px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-display iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .project-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: clamp(1rem, 3vw, 1.5rem) clamp(0.8rem, 2vw, 1rem);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .phone.active .project-info {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .project-name {
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            color: var(--bright-cyan);
+            text-shadow: 0 0 10px var(--bright-cyan);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .project-tech {
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            color: var(--electric-blue);
+            margin-bottom: 1rem;
+        }
+
+        .view-btn {
+            display: inline-block;
+            padding: clamp(0.5rem, 1.5vw, 0.7rem) clamp(0.8rem, 2vw, 1.2rem);
+            background: var(--electric-blue);
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: clamp(0.75rem, 1.8vw, 1rem);
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .view-btn:hover {
+            background: var(--bright-cyan);
+            box-shadow: 0 0 30px var(--bright-cyan);
+        }
+
+        /* Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(40px, 8vw, 60px);
+            height: clamp(40px, 8vw, 60px);
+            background: rgba(0, 217, 255, 0.2);
+            border: 2px solid var(--electric-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-arrow:hover {
+            background: var(--electric-blue);
+            box-shadow: 0 0 30px var(--electric-blue);
+        }
+
+        .nav-arrow.left {
+            left: clamp(5px, 2vw, 20px);
+        }
+
+        .nav-arrow.right {
+            right: clamp(5px, 2vw, 20px);
+        }
+
+        .nav-arrow svg {
+            width: clamp(18px, 4vw, 30px);
+            height: clamp(18px, 4vw, 30px);
+            stroke: var(--bright-cyan);
+            transition: stroke 0.3s ease;
+        }
+
+        .nav-arrow:hover svg {
+            stroke: #000;
+        }
+
+        /* Indicators */
+        .indicators {
+            position: absolute;
+            bottom: clamp(-50px, -8vh, -60px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        .indicator {
+            width: clamp(8px, 2vw, 12px);
+            height: clamp(8px, 2vw, 12px);
+            border-radius: 50%;
+            background: rgba(0, 217, 255, 0.3);
+            border: 2px solid var(--electric-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--bright-cyan);
+            box-shadow: 0 0 15px var(--bright-cyan);
+            transform: scale(1.2);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-top: 2px solid var(--electric-blue);
+            z-index: 1;
+            background: rgba(10, 14, 39, 0.8);
+            margin-top: 5rem;
+            width: 100%;
+        }
+
+        footer p {
+            color: var(--electric-blue);
+            font-size: clamp(0.75rem, 2vw, 1rem);
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .neon-box {
+                padding: 1.5rem 2rem;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .indicators {
+                bottom: -50px;
+                gap: 10px;
+            }
+        }
+
+        /* Floating animation */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="scanlines"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="neon-box floating">
+            <h1 class="glitch-text">SAMS-CLUB</h1>
+        </div>
+        <p class="subtitle">Developer // Builder // Tech Enthusiast</p>
+    </section>
+
+    <!-- Links -->
+    <section class="links-section">
+        <div class="links-grid">
+            <a href="https://forums.jtechforums.org" class="cyber-link" target="_blank">
+                JTECH FORUMS
+            </a>
+            <a href="https://forums.jtechforums.org/u/sams-club/summary" class="cyber-link" target="_blank">
+                MY PROFILE
+            </a>
+            <a href="https://github.com/fleishigs" class="cyber-link" target="_blank">
+                GITHUB
+            </a>
+            <a href="mailto:samsclubyid@gmail.com" class="cyber-link">
+                EMAIL
+            </a>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects-section">
+        <h2 class="section-title">PROJECTS</h2>
+        <p class="scroll-hint">// USE ARROWS TO NAVIGATE →</p>
+        
+        <div class="carousel-container">
+            <div class="carousel" id="carousel">
+                <!-- BootCraft -->
+                <div class="phone" data-index="0">
+                    <div class="phone-shell">
+                        <div class="phone-notch"></div>
+                        <div class="phone-display">
+                            <iframe src="about:blank" loading="lazy" id="iframe-0"></iframe>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-name">BootCraft</div>
+                            <div class="project-tech">Web App • Animation Creator • Video</div>
+                            <a href="#" class="view-btn" target="_blank" id="link-0">Launch →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Master Fab -->
+                <div class="phone" data-index="1">
+                    <div class="phone-shell">
+                        <div class="phone-notch"></div>
+                        <div class="phone-display">
+                            <iframe src="about:blank" loading="lazy" id="iframe-1"></iframe>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-name">Master Fab Construction</div>
+                            <div class="project-tech">Website • Construction • Portfolio</div>
+                            <a href="#" class="view-btn" target="_blank" id="link-1">Launch →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- K-Pod -->
+                <div class="phone" data-index="2">
+                    <div class="phone-shell">
+                        <div class="phone-notch"></div>
+                        <div class="phone-display">
+                            <iframe src="about:blank" loading="lazy" id="iframe-2"></iframe>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-name">K-Pod</div>
+                            <div class="project-tech">Web App • Podcast Player • D-Pad Nav</div>
+                            <a href="#" class="view-btn" target="_blank" id="link-2">Launch →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="nav-arrow left" id="prevBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </div>
+            <div class="nav-arrow right" id="nextBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </div>
+
+            <!-- Indicators -->
+            <div class="indicators" id="indicators"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>// BUILT BY SAMS-CLUB // 2024 //</p>
+    </footer>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // 🎯 PROJECT CONFIGURATION - EDIT YOUR URLS HERE!
+        // ═══════════════════════════════════════════════════════════════
+        
+        const PROJECTS = [
+            {
+                name: 'BootCraft',
+                tech: 'Web App • Animation Creator • Video',
+                url: 'https://raw.githubusercontent.com/Fleishigs/Boot-animation-website/main/index.html',
+                iframeUrl: 'https://raw.githubusercontent.com/Fleishigs/Boot-animation-website/main/index.html'
+            },
+            {
+                name: 'Master Fab Construction',
+                tech: 'Website • Construction • Portfolio',
+                url: 'https://raw.githubusercontent.com/Fleishigs/Masterfab-construction-/refs/heads/main/index.html',
+                iframeUrl: 'https://raw.githubusercontent.com/Fleishigs/Masterfab-construction-/refs/heads/main/index.html'
+            },
+            {
+                name: 'K-Pod',
+                tech: 'Web App • Podcast Player • D-Pad Nav',
+                url: 'https://raw.githubusercontent.com/Fleishigs/K-Pod-web/refs/heads/main/index.html',
+                iframeUrl: 'https://raw.githubusercontent.com/Fleishigs/K-Pod-web/refs/heads/main/index.html'
+            }
+        ];
+        
+        // ═══════════════════════════════════════════════════════════════
+        
+        const carousel = document.getElementById('carousel');
+        const phones = document.querySelectorAll('.phone');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicatorsContainer = document.getElementById('indicators');
+        
+        let currentIndex = 0;
+        const totalPhones = phones.length;
+
+        // Initialize projects from config
+        PROJECTS.forEach((project, index) => {
+            const iframe = document.getElementById(`iframe-${index}`);
+            const link = document.getElementById(`link-${index}`);
+            
+            if (iframe) iframe.src = project.iframeUrl;
+            if (link) link.href = project.url;
+            
+            // Update labels
+            const phone = phones[index];
+            const nameEl = phone.querySelector('.project-name');
+            const techEl = phone.querySelector('.project-tech');
+            
+            if (nameEl) nameEl.textContent = project.name;
+            if (techEl) techEl.textContent = project.tech;
+        });
+
+        // Create indicators
+        for (let i = 0; i < totalPhones; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator';
+            if (i === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateCarousel() {
+            const isMobile = window.innerWidth <= 768;
+            const screenWidth = window.innerWidth;
+            const sideOffset = isMobile ? Math.min(150, screenWidth * 0.35) : 300;
+            const stackOffset = isMobile ? 40 : 100;
+            
+            phones.forEach((phone, index) => {
+                const offset = index - currentIndex;
+                const absOffset = Math.abs(offset);
+                
+                phone.classList.remove('active');
+                
+                if (offset === 0) {
+                    // Center phone (active)
+                    phone.style.transform = 'translate(-50%, -50%) translateZ(0) scale(1)';
+                    phone.style.opacity = '1';
+                    phone.style.zIndex = '10';
+                    phone.classList.add('active');
+                } else if (offset > 0) {
+                    // Phones to the right
+                    const xOffset = sideOffset + (absOffset - 1) * stackOffset;
+                    const zOffset = absOffset * (isMobile ? 120 : 200);
+                    const scale = Math.max(0.6, 1 - absOffset * 0.15);
+                    phone.style.transform = `translate(-50%, -50%) translateX(${xOffset}px) translateZ(-${zOffset}px) rotateY(-${isMobile ? 25 : 45}deg) scale(${scale})`;
+                    phone.style.opacity = absOffset === 1 ? '0.6' : '0.3';
+                    phone.style.zIndex = `${10 - absOffset}`;
+                } else {
+                    // Phones to the left
+                    const xOffset = sideOffset + (absOffset - 1) * stackOffset;
+                    const zOffset = absOffset * (isMobile ? 120 : 200);
+                    const scale = Math.max(0.6, 1 - absOffset * 0.15);
+                    phone.style.transform = `translate(-50%, -50%) translateX(-${xOffset}px) translateZ(-${zOffset}px) rotateY(${isMobile ? 25 : 45}deg) scale(${scale})`;
+                    phone.style.opacity = absOffset === 1 ? '0.6' : '0.3';
+                    phone.style.zIndex = `${10 - absOffset}`;
+                }
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalPhones;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalPhones) % totalPhones;
+            updateCarousel();
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        // Handle resize
+        window.addEventListener('resize', updateCarousel);
+
+        // Initialize
+        updateCarousel();
+    </script>
+</body>
+</html>
