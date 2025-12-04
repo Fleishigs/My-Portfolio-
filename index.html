@@ -104,6 +104,7 @@
             position: relative;
             padding: clamp(1.5rem, 5vw, 3rem) clamp(2rem, 8vw, 5rem);
             border: 3px solid var(--electric-blue);
+            border-radius: 12px;
             box-shadow: 
                 0 0 20px var(--electric-blue),
                 inset 0 0 20px rgba(0, 217, 255, 0.1);
@@ -179,6 +180,7 @@
             padding: 1.2rem 1rem;
             background: linear-gradient(135deg, var(--dark-blue), rgba(26, 31, 58, 0.5));
             border: 2px solid var(--electric-blue);
+            border-radius: 10px;
             text-decoration: none;
             color: var(--bright-cyan);
             font-size: clamp(0.9rem, 2.5vw, 1.2rem);
@@ -202,7 +204,7 @@
         /* Projects Section */
         .projects-section {
             position: relative;
-            padding: 3rem 0;
+            padding: 3rem 0 8rem 0;
             min-height: 100vh;
             z-index: 1;
             display: flex;
@@ -225,7 +227,7 @@
             text-align: center;
             color: var(--electric-blue);
             font-size: clamp(0.8rem, 2.5vw, 1.2rem);
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             animation: pulse 2s infinite;
             padding: 0 1rem;
         }
@@ -240,13 +242,21 @@
             position: relative;
             width: 100%;
             max-width: 100%;
-            height: clamp(450px, 70vh, 700px);
-            perspective: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .phones-wrapper {
+            position: relative;
+            width: 100%;
+            height: clamp(500px, 70vh, 650px);
+            perspective: 1500px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            padding: 0 10px;
+            overflow: visible;
         }
 
         .carousel {
@@ -258,8 +268,8 @@
 
         .phone {
             position: absolute;
-            width: clamp(220px, 45vw, 320px);
-            height: clamp(440px, 75vw, 650px);
+            width: clamp(200px, 35vw, 280px);
+            height: clamp(400px, 60vw, 560px);
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
@@ -271,8 +281,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(145deg, #000, var(--dark-blue));
-            border-radius: clamp(30px, 5vw, 40px);
-            padding: clamp(8px, 2vw, 12px);
+            border-radius: 35px;
+            padding: 10px;
             box-shadow: 
                 0 0 40px rgba(0, 217, 255, 0.4),
                 inset 0 0 20px rgba(0, 217, 255, 0.1);
@@ -290,11 +300,11 @@
 
         .phone-notch {
             position: absolute;
-            top: clamp(8px, 2vw, 12px);
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: clamp(80px, 15vw, 120px);
-            height: clamp(18px, 3vw, 25px);
+            width: clamp(70px, 12vw, 100px);
+            height: clamp(16px, 2.5vw, 22px);
             background: #000;
             border-radius: 0 0 12px 12px;
             z-index: 10;
@@ -305,7 +315,7 @@
             width: 100%;
             height: 100%;
             background: #000;
-            border-radius: clamp(25px, 4vw, 35px);
+            border-radius: 28px;
             overflow: hidden;
             position: relative;
         }
@@ -316,45 +326,63 @@
             border: none;
         }
 
-        .project-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: clamp(1rem, 3vw, 1.5rem) clamp(0.8rem, 2vw, 1rem);
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
+        /* Project info BELOW phones */
+        .project-info-section {
+            width: 100%;
+            max-width: 600px;
+            padding: 0 1rem;
+            text-align: center;
         }
 
-        .phone.active .project-info {
-            opacity: 1;
-            pointer-events: all;
+        .project-info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--electric-blue);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .project-info-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .project-name {
-            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            font-size: clamp(1.3rem, 4vw, 2rem);
             color: var(--bright-cyan);
             text-shadow: 0 0 10px var(--bright-cyan);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
+            font-weight: bold;
         }
 
         .project-tech {
-            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             color: var(--electric-blue);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .view-btn {
             display: inline-block;
-            padding: clamp(0.5rem, 1.5vw, 0.7rem) clamp(0.8rem, 2vw, 1.2rem);
+            padding: 0.9rem 2rem;
             background: var(--electric-blue);
             color: #000;
             text-decoration: none;
             font-weight: bold;
-            font-size: clamp(0.75rem, 1.8vw, 1rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            border-radius: 10px;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
             transition: all 0.3s ease;
             text-transform: uppercase;
@@ -363,6 +391,7 @@
         .view-btn:hover {
             background: var(--bright-cyan);
             box-shadow: 0 0 30px var(--bright-cyan);
+            transform: translateY(-2px);
         }
 
         /* Navigation Arrows */
@@ -370,8 +399,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: clamp(40px, 8vw, 60px);
-            height: clamp(40px, 8vw, 60px);
+            width: clamp(45px, 8vw, 60px);
+            height: clamp(45px, 8vw, 60px);
             background: rgba(0, 217, 255, 0.2);
             border: 2px solid var(--electric-blue);
             border-radius: 50%;
@@ -390,16 +419,16 @@
         }
 
         .nav-arrow.left {
-            left: clamp(5px, 2vw, 20px);
+            left: clamp(10px, 3vw, 30px);
         }
 
         .nav-arrow.right {
-            right: clamp(5px, 2vw, 20px);
+            right: clamp(10px, 3vw, 30px);
         }
 
         .nav-arrow svg {
-            width: clamp(18px, 4vw, 30px);
-            height: clamp(18px, 4vw, 30px);
+            width: clamp(20px, 4vw, 30px);
+            height: clamp(20px, 4vw, 30px);
             stroke: var(--bright-cyan);
             transition: stroke 0.3s ease;
         }
@@ -410,20 +439,15 @@
 
         /* Indicators */
         .indicators {
-            position: absolute;
-            bottom: clamp(-50px, -8vh, -60px);
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 15px;
             justify-content: center;
-            padding: 0 1rem;
+            margin-top: 2rem;
         }
 
         .indicator {
-            width: clamp(8px, 2vw, 12px);
-            height: clamp(8px, 2vw, 12px);
+            width: clamp(10px, 2.5vw, 14px);
+            height: clamp(10px, 2.5vw, 14px);
             border-radius: 50%;
             background: rgba(0, 217, 255, 0.3);
             border: 2px solid var(--electric-blue);
@@ -434,24 +458,24 @@
         .indicator.active {
             background: var(--bright-cyan);
             box-shadow: 0 0 15px var(--bright-cyan);
-            transform: scale(1.2);
+            transform: scale(1.3);
         }
 
         /* Footer */
         footer {
             position: relative;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
             text-align: center;
             border-top: 2px solid var(--electric-blue);
             z-index: 1;
             background: rgba(10, 14, 39, 0.8);
-            margin-top: 5rem;
             width: 100%;
+            border-radius: 0;
         }
 
         footer p {
             color: var(--electric-blue);
-            font-size: clamp(0.75rem, 2vw, 1rem);
+            font-size: clamp(0.8rem, 2vw, 1rem);
         }
 
         /* Mobile specific adjustments */
@@ -463,10 +487,10 @@
             .links-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .indicators {
-                bottom: -50px;
-                gap: 10px;
+
+            .phone {
+                width: clamp(180px, 40vw, 240px);
+                height: clamp(360px, 70vw, 480px);
             }
         }
 
@@ -521,67 +545,73 @@
         <p class="scroll-hint">// USE ARROWS TO NAVIGATE →</p>
         
         <div class="carousel-container">
-            <div class="carousel" id="carousel">
-                <!-- BootCraft -->
-                <div class="phone" data-index="0">
-                    <div class="phone-shell">
-                        <div class="phone-notch"></div>
-                        <div class="phone-display">
-                            <iframe src="about:blank" loading="lazy" id="iframe-0"></iframe>
+            <div class="phones-wrapper">
+                <div class="carousel" id="carousel">
+                    <!-- BootCraft -->
+                    <div class="phone" data-index="0">
+                        <div class="phone-shell">
+                            <div class="phone-notch"></div>
+                            <div class="phone-display">
+                                <iframe src="https://bootanimation.netlify.app" loading="lazy" id="iframe-0"></iframe>
+                            </div>
                         </div>
-                        <div class="project-info">
-                            <div class="project-name">BootCraft</div>
-                            <div class="project-tech">Web App • Animation Creator • Video</div>
-                            <a href="#" class="view-btn" target="_blank" id="link-0">Launch →</a>
+                    </div>
+
+                    <!-- Master Fab -->
+                    <div class="phone" data-index="1">
+                        <div class="phone-shell">
+                            <div class="phone-notch"></div>
+                            <div class="phone-display">
+                                <iframe src="https://masterfab.netlify.app" loading="lazy" id="iframe-1"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- K-Pod -->
+                    <div class="phone" data-index="2">
+                        <div class="phone-shell">
+                            <div class="phone-notch"></div>
+                            <div class="phone-display">
+                                <iframe src="https://k-pod.netlify.app" loading="lazy" id="iframe-2" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Master Fab -->
-                <div class="phone" data-index="1">
-                    <div class="phone-shell">
-                        <div class="phone-notch"></div>
-                        <div class="phone-display">
-                            <iframe src="about:blank" loading="lazy" id="iframe-1"></iframe>
-                        </div>
-                        <div class="project-info">
-                            <div class="project-name">Master Fab Construction</div>
-                            <div class="project-tech">Website • Construction • Portfolio</div>
-                            <a href="#" class="view-btn" target="_blank" id="link-1">Launch →</a>
-                        </div>
-                    </div>
+                <!-- Navigation -->
+                <div class="nav-arrow left" id="prevBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
                 </div>
-
-                <!-- K-Pod -->
-                <div class="phone" data-index="2">
-                    <div class="phone-shell">
-                        <div class="phone-notch"></div>
-                        <div class="phone-display">
-                            <iframe src="about:blank" loading="lazy" id="iframe-2"></iframe>
-                        </div>
-                        <div class="project-info">
-                            <div class="project-name">K-Pod</div>
-                            <div class="project-tech">Web App • Podcast Player • D-Pad Nav</div>
-                            <a href="#" class="view-btn" target="_blank" id="link-2">Launch →</a>
-                        </div>
-                    </div>
+                <div class="nav-arrow right" id="nextBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
                 </div>
-            </div>
-
-            <!-- Navigation -->
-            <div class="nav-arrow left" id="prevBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M15 18l-6-6 6-6"/>
-                </svg>
-            </div>
-            <div class="nav-arrow right" id="nextBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M9 18l6-6-6-6"/>
-                </svg>
             </div>
 
             <!-- Indicators -->
             <div class="indicators" id="indicators"></div>
+
+            <!-- Project Info Below Phones -->
+            <div class="project-info-section">
+                <div class="project-info-card active" data-project="0">
+                    <div class="project-name">BootCraft</div>
+                    <div class="project-tech">Web App • Animation Creator • Video</div>
+                    <a href="https://bootanimation.netlify.app" class="view-btn" target="_blank">Launch →</a>
+                </div>
+                <div class="project-info-card" data-project="1">
+                    <div class="project-name">Master Fab Construction</div>
+                    <div class="project-tech">Website • Construction • Portfolio</div>
+                    <a href="https://masterfab.netlify.app" class="view-btn" target="_blank">Launch →</a>
+                </div>
+                <div class="project-info-card" data-project="2">
+                    <div class="project-name">K-Pod</div>
+                    <div class="project-tech">Web App • Podcast Player • D-Pad Nav</div>
+                    <a href="https://k-pod.netlify.app" class="view-btn" target="_blank">Launch →</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -591,58 +621,15 @@
     </footer>
 
     <script>
-        // ═══════════════════════════════════════════════════════════════
-        // 🎯 PROJECT CONFIGURATION - EDIT YOUR URLS HERE!
-        // ═══════════════════════════════════════════════════════════════
-        
-        const PROJECTS = [
-            {
-                name: 'BootCraft',
-                tech: 'Web App • Animation Creator • Video',
-                url: 'https://bootanimation.netlify.app',
-                iframeUrl: 'https://bootanimation.netlify.app'
-            },
-            {
-                name: 'Master Fab Construction',
-                tech: 'Website • Construction • Portfolio',
-                url: 'https://masterfab.netlify.app',
-                iframeUrl: 'https://masterfab.netlify.app'
-            },
-            {
-                name: 'K-Pod',
-                tech: 'Web App • Podcast Player • D-Pad Nav',
-                url: 'https://k-pod.netlify.app',
-                iframeUrl: 'https://k-pod.netlify.app'
-            }
-        ];
-        
-        // ═══════════════════════════════════════════════════════════════
-        
         const carousel = document.getElementById('carousel');
         const phones = document.querySelectorAll('.phone');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const indicatorsContainer = document.getElementById('indicators');
+        const projectCards = document.querySelectorAll('.project-info-card');
         
         let currentIndex = 0;
         const totalPhones = phones.length;
-
-        // Initialize projects from config
-        PROJECTS.forEach((project, index) => {
-            const iframe = document.getElementById(`iframe-${index}`);
-            const link = document.getElementById(`link-${index}`);
-            
-            if (iframe) iframe.src = project.iframeUrl;
-            if (link) link.href = project.url;
-            
-            // Update labels
-            const phone = phones[index];
-            const nameEl = phone.querySelector('.project-name');
-            const techEl = phone.querySelector('.project-tech');
-            
-            if (nameEl) nameEl.textContent = project.name;
-            if (techEl) techEl.textContent = project.tech;
-        });
 
         // Create indicators
         for (let i = 0; i < totalPhones; i++) {
@@ -658,8 +645,9 @@
         function updateCarousel() {
             const isMobile = window.innerWidth <= 768;
             const screenWidth = window.innerWidth;
-            const sideOffset = isMobile ? Math.min(150, screenWidth * 0.35) : 300;
-            const stackOffset = isMobile ? 40 : 100;
+            
+            // Smaller, tighter spacing
+            const sideOffset = isMobile ? Math.min(120, screenWidth * 0.30) : 220;
             
             phones.forEach((phone, index) => {
                 const offset = index - currentIndex;
@@ -673,27 +661,33 @@
                     phone.style.opacity = '1';
                     phone.style.zIndex = '10';
                     phone.classList.add('active');
-                } else if (offset > 0) {
-                    // Phones to the right
-                    const xOffset = sideOffset + (absOffset - 1) * stackOffset;
-                    const zOffset = absOffset * (isMobile ? 120 : 200);
-                    const scale = Math.max(0.6, 1 - absOffset * 0.15);
-                    phone.style.transform = `translate(-50%, -50%) translateX(${xOffset}px) translateZ(-${zOffset}px) rotateY(-${isMobile ? 25 : 45}deg) scale(${scale})`;
-                    phone.style.opacity = absOffset === 1 ? '0.6' : '0.3';
-                    phone.style.zIndex = `${10 - absOffset}`;
+                } else if (offset === 1) {
+                    // Right phone
+                    phone.style.transform = `translate(-50%, -50%) translateX(${sideOffset}px) translateZ(-100px) rotateY(-20deg) scale(0.85)`;
+                    phone.style.opacity = '0.7';
+                    phone.style.zIndex = '5';
+                } else if (offset === -1) {
+                    // Left phone
+                    phone.style.transform = `translate(-50%, -50%) translateX(-${sideOffset}px) translateZ(-100px) rotateY(20deg) scale(0.85)`;
+                    phone.style.opacity = '0.7';
+                    phone.style.zIndex = '5';
                 } else {
-                    // Phones to the left
-                    const xOffset = sideOffset + (absOffset - 1) * stackOffset;
-                    const zOffset = absOffset * (isMobile ? 120 : 200);
-                    const scale = Math.max(0.6, 1 - absOffset * 0.15);
-                    phone.style.transform = `translate(-50%, -50%) translateX(-${xOffset}px) translateZ(-${zOffset}px) rotateY(${isMobile ? 25 : 45}deg) scale(${scale})`;
-                    phone.style.opacity = absOffset === 1 ? '0.6' : '0.3';
-                    phone.style.zIndex = `${10 - absOffset}`;
+                    // Hidden phones
+                    const direction = offset > 0 ? 1 : -1;
+                    phone.style.transform = `translate(-50%, -50%) translateX(${direction * sideOffset * 2}px) translateZ(-200px) scale(0.6)`;
+                    phone.style.opacity = '0';
+                    phone.style.zIndex = '1';
                 }
             });
 
+            // Update indicators
             indicators.forEach((indicator, index) => {
                 indicator.classList.toggle('active', index === currentIndex);
+            });
+
+            // Update project info cards
+            projectCards.forEach((card, index) => {
+                card.classList.toggle('active', index === currentIndex);
             });
         }
 
