@@ -251,12 +251,14 @@
         .phones-wrapper {
             position: relative;
             width: 100%;
-            height: clamp(500px, 70vh, 650px);
-            perspective: 1500px;
+            max-width: 1400px;
+            height: clamp(550px, 75vh, 700px);
+            perspective: 2000px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: visible;
+            padding: 0 clamp(10px, 5vw, 60px);
         }
 
         .carousel {
@@ -268,11 +270,12 @@
 
         .phone {
             position: absolute;
-            width: clamp(220px, 35vw, 280px);
-            height: clamp(440px, 60vw, 560px);
+            width: clamp(240px, 32vw, 300px);
+            height: clamp(480px, 55vw, 600px);
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%);
+            margin-left: calc(clamp(240px, 32vw, 300px) / -2);
+            margin-top: calc(clamp(480px, 55vw, 600px) / -2);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
@@ -324,10 +327,10 @@
             width: 100%;
             height: 100%;
             border: none;
-            transform: scale(0.7);
+            transform: scale(0.65);
             transform-origin: 0 0;
-            width: 142.857%;
-            height: 142.857%;
+            width: 153.846%;
+            height: 153.846%;
             pointer-events: auto;
         }
 
@@ -494,8 +497,10 @@
             }
 
             .phone {
-                width: clamp(200px, 70vw, 280px);
-                height: clamp(400px, 110vw, 560px);
+                width: clamp(220px, 65vw, 280px);
+                height: clamp(440px, 105vw, 560px);
+                margin-left: calc(clamp(220px, 65vw, 280px) / -2);
+                margin-top: calc(clamp(440px, 105vw, 560px) / -2);
             }
 
             .phone-display iframe {
@@ -638,7 +643,7 @@
         const indicatorsContainer = document.getElementById('indicators');
         const projectCards = document.querySelectorAll('.project-info-card');
         
-        let currentIndex = 0;
+        let currentIndex = 1;
         const totalPhones = phones.length;
 
         // Create indicators
@@ -655,36 +660,41 @@
         function updateCarousel() {
             const isMobile = window.innerWidth <= 768;
             const screenWidth = window.innerWidth;
-            const sideOffset = isMobile ? Math.min(120, screenWidth * 0.30) : 220;
+            
+            // Dynamic spacing based on screen size
+            const sideOffset = isMobile ? Math.min(160, screenWidth * 0.45) : Math.min(350, screenWidth * 0.28);
             
             phones.forEach((phone, index) => {
                 const offset = index - currentIndex;
-                const absOffset = Math.abs(offset);
                 
                 phone.classList.remove('active');
                 
                 if (offset === 0) {
-                    // Center phone (active)
-                    phone.style.transform = 'translate(-50%, -50%) translateZ(0) scale(1)';
+                    // Center phone (active) - no transform, just centered
+                    phone.style.transform = 'translateZ(0) scale(1)';
                     phone.style.opacity = '1';
                     phone.style.zIndex = '10';
+                    phone.style.filter = 'brightness(1)';
                     phone.classList.add('active');
                 } else if (offset === 1) {
                     // Right phone
-                    phone.style.transform = `translate(-50%, -50%) translateX(${sideOffset}px) translateZ(-100px) rotateY(-20deg) scale(0.85)`;
-                    phone.style.opacity = '0.7';
+                    phone.style.transform = `translateX(${sideOffset}px) translateZ(-150px) rotateY(-25deg) scale(0.82)`;
+                    phone.style.opacity = '0.65';
                     phone.style.zIndex = '5';
+                    phone.style.filter = 'brightness(0.7)';
                 } else if (offset === -1) {
                     // Left phone
-                    phone.style.transform = `translate(-50%, -50%) translateX(-${sideOffset}px) translateZ(-100px) rotateY(20deg) scale(0.85)`;
-                    phone.style.opacity = '0.7';
+                    phone.style.transform = `translateX(-${sideOffset}px) translateZ(-150px) rotateY(25deg) scale(0.82)`;
+                    phone.style.opacity = '0.65';
                     phone.style.zIndex = '5';
+                    phone.style.filter = 'brightness(0.7)';
                 } else {
                     // Hidden phones
                     const direction = offset > 0 ? 1 : -1;
-                    phone.style.transform = `translate(-50%, -50%) translateX(${direction * sideOffset * 2}px) translateZ(-200px) scale(0.6)`;
+                    phone.style.transform = `translateX(${direction * sideOffset * 2.5}px) translateZ(-300px) scale(0.5)`;
                     phone.style.opacity = '0';
                     phone.style.zIndex = '1';
+                    phone.style.filter = 'brightness(0.5)';
                 }
             });
 
