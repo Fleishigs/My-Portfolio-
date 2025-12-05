@@ -17,6 +17,8 @@
             --electric-blue: #00d9ff;
             --bright-cyan: #0ff;
             --neon-purple: #b000ff;
+            --neon-pink: #ff006e;
+            --neon-green: #39ff14;
         }
 
         body {
@@ -26,17 +28,26 @@
             overflow-x: hidden;
         }
 
-        .grid-bg {
+        /* INTENSE BACKGROUND LAYERS */
+        .bg-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(0, 217, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(0deg, rgba(0, 217, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
             z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Animated Grid */
+        .grid-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 217, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(0, 217, 255, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
             animation: gridMove 20s linear infinite;
         }
 
@@ -45,8 +56,126 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
+        /* Floating Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--electric-blue), transparent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--neon-purple), transparent);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--neon-pink), transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -80px) scale(1.1); }
+            50% { transform: translate(-50px, 100px) scale(0.9); }
+            75% { transform: translate(80px, 50px) scale(1.05); }
+        }
+
+        /* Particle System */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle-dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--bright-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--bright-cyan);
+            animation: particleRise linear infinite;
+        }
+
+        @keyframes particleRise {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(var(--drift));
+                opacity: 0;
+            }
+        }
+
+        /* Scanning Lines */
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--bright-cyan), transparent);
+            box-shadow: 0 0 10px var(--bright-cyan);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+
+        /* Wave Lines */
+        .wave-line {
+            position: absolute;
+            width: 200%;
+            height: 200px;
+            left: -50%;
+            opacity: 0.3;
+        }
+
+        .wave-1 {
+            top: 20%;
+            background: linear-gradient(transparent, var(--electric-blue), transparent);
+            animation: wave 8s ease-in-out infinite;
+        }
+
+        .wave-2 {
+            top: 60%;
+            background: linear-gradient(transparent, var(--neon-purple), transparent);
+            animation: wave 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(0) skewY(2deg); }
+            50% { transform: translateX(-25%) skewY(-2deg); }
+        }
+
         .spacer {
-            height: 800vh;
+            height: 900vh;
         }
 
         .scroll-content {
@@ -82,7 +211,6 @@
         }
 
         .title-wrapper {
-            position: relative;
             display: flex;
             gap: 2rem;
             margin-bottom: 2rem;
@@ -115,7 +243,7 @@
             60% { transform: translateY(-10px); }
         }
 
-        /* Scene 2: Spinning About */
+        /* Scene 2: 3D FLIP ABOUT */
         .about-box {
             max-width: 900px;
             padding: 4rem;
@@ -125,6 +253,7 @@
             backdrop-filter: blur(10px);
             text-align: center;
             box-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
+            transform-style: preserve-3d;
         }
 
         .about-box h2 {
@@ -140,7 +269,7 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Scene 3: Flying Cards */
+        /* Scene 3: BOUNCING CARDS */
         .cards-container {
             position: relative;
             width: 100%;
@@ -157,12 +286,12 @@
             padding: 2rem;
             text-align: center;
             backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .project-card:hover {
-            transform: translateY(-10px) !important;
-            box-shadow: 0 20px 60px rgba(0, 217, 255, 0.6) !important;
+            transform: scale(1.15) !important;
+            box-shadow: 0 30px 80px rgba(0, 217, 255, 0.8) !important;
             z-index: 100 !important;
         }
 
@@ -202,10 +331,10 @@
         .project-link:hover {
             background: var(--bright-cyan);
             box-shadow: 0 0 30px var(--bright-cyan);
-            transform: scale(1.1);
+            transform: scale(1.2) rotate(5deg);
         }
 
-        /* Scene 4: Orbiting Phones */
+        /* Scene 4: BARREL ROLLING PHONES */
         .phones-container {
             position: relative;
             width: 100%;
@@ -216,6 +345,7 @@
             position: absolute;
             width: 280px;
             height: 560px;
+            transform-style: preserve-3d;
         }
 
         .phone-3d {
@@ -231,7 +361,8 @@
         }
 
         .phone-3d:hover {
-            box-shadow: 0 0 80px rgba(0, 217, 255, 0.8);
+            box-shadow: 0 0 100px rgba(0, 217, 255, 1);
+            transform: scale(1.1) !important;
             z-index: 100;
         }
 
@@ -282,40 +413,38 @@
             bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.2rem;
-            color: var(--electric-blue);
-            animation: pulse 2s infinite;
+            font-size: 1.5rem;
+            color: var(--neon-pink);
+            animation: pulse 1.5s infinite;
             opacity: 0;
+            text-shadow: 0 0 20px var(--neon-pink);
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.5; transform: translateX(-50%) scale(1.1); }
         }
 
-        /* Scene 5: Contact */
+        /* Scene 5: VORTEX CONTACT */
         .contact-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4rem;
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
 
         .contact-title {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: clamp(2.5rem, 8vw, 5rem);
             color: var(--bright-cyan);
             text-shadow: 0 0 30px var(--bright-cyan);
             text-align: center;
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 3rem;
-        }
-
         .contact-card {
+            position: absolute;
             width: 220px;
             height: 220px;
             background: rgba(255, 255, 255, 0.05);
@@ -333,10 +462,11 @@
         }
 
         .contact-card:hover {
-            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
-            color: #fff;
-            transform: translateY(-15px) scale(1.05) !important;
-            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.8);
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-green));
+            color: #000;
+            transform: scale(1.3) rotate(15deg) !important;
+            box-shadow: 0 20px 60px rgba(255, 0, 110, 0.8);
+            z-index: 100;
         }
 
         .contact-icon {
@@ -353,9 +483,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--electric-blue), var(--neon-purple));
-            box-shadow: 0 0 10px var(--electric-blue);
+            height: 6px;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-purple), var(--neon-pink));
+            box-shadow: 0 0 20px var(--bright-cyan);
             z-index: 1000;
             width: 0%;
         }
@@ -371,10 +501,6 @@
             .card-2 { top: 40%; }
             .card-3 { top: 70%; }
 
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
             .phone-wrapper {
                 width: 240px;
                 height: 480px;
@@ -383,12 +509,23 @@
     </style>
 </head>
 <body>
-    <div class="grid-bg"></div>
+    <!-- INTENSE BACKGROUND -->
+    <div class="bg-container">
+        <div class="grid-bg"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="particles" id="particles"></div>
+        <div class="scan-line"></div>
+        <div class="wave-line wave-1"></div>
+        <div class="wave-line wave-2"></div>
+    </div>
+
     <div class="progress-bar" id="progressBar"></div>
 
     <div class="spacer">
         <div class="scroll-content">
-            <!-- Scene 1: Clean Hero (0-12%) -->
+            <!-- Scene 1: NORMAL CLEAN HERO (0-18%) -->
             <div class="scene scene-1" id="scene1">
                 <div class="title-wrapper">
                     <div class="hero-title" id="titleLeft">SAMS</div>
@@ -398,7 +535,7 @@
                 <div class="scroll-hint">↓ Scroll to Explore ↓</div>
             </div>
 
-            <!-- Scene 2: Spinning About (12-28%) -->
+            <!-- Scene 2: 3D FLIP (18-36%) -->
             <div class="scene scene-2" id="scene2">
                 <div class="about-box" id="aboutBox">
                     <h2>Crafting Digital Experiences</h2>
@@ -406,13 +543,13 @@
                 </div>
             </div>
 
-            <!-- Scene 3: Flying Cards (28-48%) -->
+            <!-- Scene 3: BOUNCING CARDS (36-58%) - LONGER WITH PAUSE -->
             <div class="scene scene-3" id="scene3">
                 <div class="cards-container">
                     <div class="project-card card-1" id="card1">
                         <div class="project-icon">🎨</div>
                         <h3>BootCraft</h3>
-                        <p>Professional boot animation creator with video trimming</p>
+                        <p>Boot animation creator with video trimming</p>
                         <a href="https://bootanimation.netlify.app" class="project-link" target="_blank">Launch →</a>
                     </div>
                     <div class="project-card card-2" id="card2">
@@ -430,7 +567,7 @@
                 </div>
             </div>
 
-            <!-- Scene 4: Orbiting Phones (48-75%) -->
+            <!-- Scene 4: BARREL ROLL PHONES (58-84%) -->
             <div class="scene scene-4" id="scene4">
                 <div class="phones-container">
                     <div class="phone-wrapper" id="phone1">
@@ -461,37 +598,47 @@
                         <div class="phone-label">K-Pod</div>
                     </div>
                 </div>
-                <div class="interact-hint" id="interactHint">Click to explore each project</div>
+                <div class="interact-hint" id="interactHint">⚡ CLICK TO EXPLORE ⚡</div>
             </div>
 
-            <!-- Scene 5: Exploding Contact (75-100%) -->
+            <!-- Scene 5: VORTEX CONTACT (84-100%) -->
             <div class="scene scene-5" id="scene5">
                 <div class="contact-container">
                     <h2 class="contact-title" id="contactTitle">Let's Connect</h2>
-                    <div class="contact-grid">
-                        <a href="https://forums.jtechforums.org" class="contact-card" id="contact1" target="_blank">
-                            <div class="contact-icon">🌐</div>
-                            <div class="contact-label">JTech Forums</div>
-                        </a>
-                        <a href="https://github.com/fleishigs" class="contact-card" id="contact2" target="_blank">
-                            <div class="contact-icon">💻</div>
-                            <div class="contact-label">GitHub</div>
-                        </a>
-                        <a href="mailto:samsclubyid@gmail.com" class="contact-card" id="contact3">
-                            <div class="contact-icon">📧</div>
-                            <div class="contact-label">Email</div>
-                        </a>
-                        <a href="https://forums.jtechforums.org/u/sams-club/summary" class="contact-card" id="contact4" target="_blank">
-                            <div class="contact-icon">👤</div>
-                            <div class="contact-label">Profile</div>
-                        </a>
-                    </div>
+                    <a href="https://forums.jtechforums.org" class="contact-card" id="contact1" target="_blank">
+                        <div class="contact-icon">🌐</div>
+                        <div class="contact-label">JTech Forums</div>
+                    </a>
+                    <a href="https://github.com/fleishigs" class="contact-card" id="contact2" target="_blank">
+                        <div class="contact-icon">💻</div>
+                        <div class="contact-label">GitHub</div>
+                    </a>
+                    <a href="mailto:samsclubyid@gmail.com" class="contact-card" id="contact3">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-label">Email</div>
+                    </a>
+                    <a href="https://forums.jtechforums.org/u/sams-club/summary" class="contact-card" id="contact4" target="_blank">
+                        <div class="contact-icon">👤</div>
+                        <div class="contact-label">Profile</div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Create particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle-dot';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (5 + Math.random() * 10) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.setProperty('--drift', (Math.random() * 200 - 100) + 'px');
+            particlesContainer.appendChild(particle);
+        }
+
         const progressBar = document.getElementById('progressBar');
         
         const scene1 = document.getElementById('scene1');
@@ -525,120 +672,134 @@
             const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
             progressBar.style.width = scrollPercentage + '%';
 
-            // Manage scene visibility
             [scene1, scene2, scene3, scene4, scene5].forEach(s => {
                 s.classList.remove('active');
                 s.style.opacity = 0;
             });
 
-            // Scene 1: Title splits apart (0-12%)
-            if (scrollPercentage < 12) {
+            // Scene 1: CLEAN HERO (0-18%)
+            if (scrollPercentage < 18) {
                 scene1.classList.add('active');
                 scene1.style.opacity = 1;
                 
-                const progress = Math.min(scrollPercentage / 8, 1);
-                titleLeft.style.transform = `translateX(${-progress * 120}%) rotate(${-progress * 45}deg)`;
-                titleRight.style.transform = `translateX(${progress * 120}%) rotate(${progress * 45}deg)`;
-                subtitle.style.opacity = Math.max(0, 1 - progress * 2);
+                if (scrollPercentage < 10) {
+                    titleLeft.style.transform = `translateX(0%) rotate(0deg)`;
+                    titleRight.style.transform = `translateX(0%) rotate(0deg)`;
+                    subtitle.style.opacity = 1;
+                } else {
+                    const progress = (scrollPercentage - 10) / 8;
+                    titleLeft.style.transform = `translateX(${-progress * 120}%) rotate(${-progress * 45}deg)`;
+                    titleRight.style.transform = `translateX(${progress * 120}%) rotate(${progress * 45}deg)`;
+                    subtitle.style.opacity = Math.max(0, 1 - progress * 2);
+                }
             }
-            // Scene 2: About spins 720deg (12-28%) - PAUSE at 22-28%
-            else if (scrollPercentage >= 12 && scrollPercentage < 28) {
+            // Scene 2: 3D FLIP (18-36%)
+            else if (scrollPercentage >= 18 && scrollPercentage < 36) {
                 scene2.classList.add('active');
                 scene2.style.opacity = 1;
                 
-                if (scrollPercentage < 22) {
-                    const progress = (scrollPercentage - 12) / 10;
-                    const eased = 1 - Math.pow(1 - progress, 3);
-                    aboutBox.style.transform = `scale(${0.5 + eased * 0.5}) rotate(${(1 - eased) * 720}deg)`;
+                if (scrollPercentage < 28) {
+                    const progress = (scrollPercentage - 18) / 10;
+                    aboutBox.style.transform = `perspective(1000px) rotateX(${progress * 1080}deg) rotateY(${progress * 720}deg) scale(${0.3 + progress * 0.7})`;
                 } else {
-                    // PAUSED - holds still for reading
-                    aboutBox.style.transform = `scale(1) rotate(0deg)`;
+                    aboutBox.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
                 }
             }
-            // Scene 3: Cards fly in from crazy angles (28-48%)
-            else if (scrollPercentage >= 28 && scrollPercentage < 48) {
+            // Scene 3: BOUNCING CARDS (36-58%) - WITH PAUSE
+            else if (scrollPercentage >= 36 && scrollPercentage < 58) {
                 scene3.classList.add('active');
                 scene3.style.opacity = 1;
                 
-                const progress = (scrollPercentage - 28) / 20;
-                const eased = 1 - Math.pow(1 - progress, 3);
-                
-                // Card 1: Top-left spinning
-                card1.style.transform = `translate(${(1 - eased) * -300}%, ${(1 - eased) * -200}%) rotate(${(1 - eased) * -360}deg) scale(${0.5 + eased * 0.5})`;
-                
-                // Card 2: Bottom zooming
-                card2.style.transform = `translate(-50%, ${-50 + (1 - eased) * 100}%) rotate(${(1 - eased) * 180}deg) scale(${0.5 + eased * 0.5})`;
-                
-                // Card 3: Right spinning
-                card3.style.transform = `translate(${(1 - eased) * 300}%, ${(1 - eased) * -200}%) rotate(${(1 - eased) * 360}deg) scale(${0.5 + eased * 0.5})`;
+                if (scrollPercentage < 48) {
+                    // Animation phase
+                    const progress = (scrollPercentage - 36) / 12;
+                    const bounce = Math.abs(Math.sin(progress * Math.PI * 4)) * 100;
+                    
+                    card1.style.transform = `translate(${(1 - progress) * -500}%, ${(1 - progress) * -300 - bounce}%) rotate(${(1 - progress) * -1080}deg) scale(${0.3 + progress * 0.7})`;
+                    card2.style.transform = `translate(-50%, ${-50 + (1 - progress) * 300 + bounce}%) rotate(${(1 - progress) * 720}deg) scale(${0.3 + progress * 0.7})`;
+                    card3.style.transform = `translate(${(1 - progress) * 500}%, ${(1 - progress) * -300 - bounce}%) rotate(${(1 - progress) * 1080}deg) scale(${0.3 + progress * 0.7})`;
+                } else {
+                    // PAUSE - cards hold still
+                    card1.style.transform = `translate(0%, 0%) rotate(0deg) scale(1)`;
+                    card2.style.transform = `translate(-50%, -50%) rotate(0deg) scale(1)`;
+                    card3.style.transform = `translate(0%, 0%) rotate(0deg) scale(1)`;
+                }
             }
-            // Scene 4: Phones orbit then settle (48-75%)
-            else if (scrollPercentage >= 48 && scrollPercentage < 75) {
+            // Scene 4: BARREL ROLL PHONES (58-84%)
+            else if (scrollPercentage >= 58 && scrollPercentage < 84) {
                 scene4.classList.add('active');
                 scene4.style.opacity = 1;
                 
-                // 48-62%: Orbit spinning
-                if (scrollPercentage < 62) {
-                    const progress = (scrollPercentage - 48) / 14;
-                    const angle = progress * 720;
-                    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+                if (scrollPercentage < 72) {
+                    const progress = (scrollPercentage - 58) / 14;
+                    const angle = progress * 1080;
+                    const radius = 400;
                     
                     const x1 = 50 + Math.cos((angle - 120) * Math.PI / 180) * (radius / window.innerWidth * 100);
                     const y1 = 50 + Math.sin((angle - 120) * Math.PI / 180) * (radius / window.innerHeight * 100);
                     phone1.style.left = `${x1}%`;
                     phone1.style.top = `${y1}%`;
-                    phone1.style.transform = `translate(-50%, -50%) rotate(${angle}deg) scale(${0.7 + progress * 0.3})`;
+                    phone1.style.transform = `translate(-50%, -50%) rotateZ(${angle * 2}deg) rotateY(${angle}deg) scale(${0.5 + progress * 0.5})`;
                     
                     const x2 = 50 + Math.cos(angle * Math.PI / 180) * (radius / window.innerWidth * 100);
                     const y2 = 50 + Math.sin(angle * Math.PI / 180) * (radius / window.innerHeight * 100);
                     phone2.style.left = `${x2}%`;
                     phone2.style.top = `${y2}%`;
-                    phone2.style.transform = `translate(-50%, -50%) rotate(${-angle}deg) scale(${0.7 + progress * 0.3})`;
+                    phone2.style.transform = `translate(-50%, -50%) rotateZ(${-angle * 2}deg) rotateX(${angle}deg) scale(${0.5 + progress * 0.5})`;
                     
                     const x3 = 50 + Math.cos((angle + 120) * Math.PI / 180) * (radius / window.innerWidth * 100);
                     const y3 = 50 + Math.sin((angle + 120) * Math.PI / 180) * (radius / window.innerHeight * 100);
                     phone3.style.left = `${x3}%`;
                     phone3.style.top = `${y3}%`;
-                    phone3.style.transform = `translate(-50%, -50%) rotate(${angle * 1.5}deg) scale(${0.7 + progress * 0.3})`;
+                    phone3.style.transform = `translate(-50%, -50%) rotateZ(${angle * 3}deg) rotateY(${-angle}deg) scale(${0.5 + progress * 0.5})`;
                     
                     interactHint.style.opacity = 0;
-                }
-                // 62-75%: SETTLE into grid - PAUSE
-                else {
-                    const settleProgress = Math.min((scrollPercentage - 62) / 8, 1);
+                } else {
+                    const settleProgress = Math.min((scrollPercentage - 72) / 12, 1);
                     const eased = 1 - Math.pow(1 - settleProgress, 3);
                     
-                    // Final grid positions
-                    phone1.style.left = `${20 + (eased * 10)}%`;
+                    phone1.style.left = `${20}%`;
                     phone1.style.top = '50%';
-                    phone1.style.transform = `translate(-50%, -50%) rotate(0deg) scale(1)`;
+                    phone1.style.transform = `translate(-50%, -50%) rotateZ(0deg) rotateY(0deg) scale(1)`;
                     
                     phone2.style.left = '50%';
                     phone2.style.top = '50%';
-                    phone2.style.transform = `translate(-50%, -50%) rotate(0deg) scale(1)`;
+                    phone2.style.transform = `translate(-50%, -50%) rotateZ(0deg) rotateX(0deg) scale(1)`;
                     
-                    phone3.style.left = `${70 + (eased * 10)}%`;
+                    phone3.style.left = `${80}%`;
                     phone3.style.top = '50%';
-                    phone3.style.transform = `translate(-50%, -50%) rotate(0deg) scale(1)`;
+                    phone3.style.transform = `translate(-50%, -50%) rotateZ(0deg) rotateY(0deg) scale(1)`;
                     
                     interactHint.style.opacity = eased;
                 }
             }
-            // Scene 5: Contact cards explode from center (75-100%)
-            else if (scrollPercentage >= 75) {
+            // Scene 5: VORTEX CONTACT (84-100%)
+            else if (scrollPercentage >= 84) {
                 scene5.classList.add('active');
                 scene5.style.opacity = 1;
                 
-                const progress = Math.min((scrollPercentage - 75) / 20, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
+                const progress = Math.min((scrollPercentage - 84) / 16, 1);
                 
-                contactTitle.style.transform = `scale(${0.5 + eased * 0.5})`;
-                contactTitle.style.opacity = eased;
+                contactTitle.style.transform = `translateX(-50%) scale(${0.3 + progress * 0.7}) rotateZ(${(1 - progress) * 360}deg)`;
                 
-                contact1.style.transform = `rotate(${(1 - eased) * 360}deg) scale(${eased})`;
-                contact2.style.transform = `rotate(${(1 - eased) * -360}deg) scale(${eased})`;
-                contact3.style.transform = `rotate(${(1 - eased) * 180}deg) scale(${eased})`;
-                contact4.style.transform = `rotate(${(1 - eased) * -180}deg) scale(${eased})`;
+                const spiralAngle = progress * 720;
+                const radius = (1 - progress) * 300;
+                
+                contact1.style.left = `${50 + Math.cos(spiralAngle * Math.PI / 180) * radius}px`;
+                contact1.style.top = `${50 + Math.sin(spiralAngle * Math.PI / 180) * radius}px`;
+                contact1.style.transform = `rotate(${(1 - progress) * 720}deg) scale(${progress})`;
+                
+                contact2.style.right = `${50 + Math.cos((spiralAngle + 90) * Math.PI / 180) * radius}px`;
+                contact2.style.top = `${50 + Math.sin((spiralAngle + 90) * Math.PI / 180) * radius}px`;
+                contact2.style.transform = `rotate(${(1 - progress) * -720}deg) scale(${progress})`;
+                
+                contact3.style.left = `${50 + Math.cos((spiralAngle + 180) * Math.PI / 180) * radius}px`;
+                contact3.style.bottom = `${50 + Math.sin((spiralAngle + 180) * Math.PI / 180) * radius}px`;
+                contact3.style.transform = `rotate(${(1 - progress) * 360}deg) scale(${progress})`;
+                
+                contact4.style.right = `${50 + Math.cos((spiralAngle + 270) * Math.PI / 180) * radius}px`;
+                contact4.style.bottom = `${50 + Math.sin((spiralAngle + 270) * Math.PI / 180) * radius}px`;
+                contact4.style.transform = `rotate(${(1 - progress) * -360}deg) scale(${progress})`;
             }
         }
 
